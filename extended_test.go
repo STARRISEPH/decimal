@@ -48,3 +48,48 @@ func TestDecimal_Int10k(t *testing.T) {
 		})
 	}
 }
+
+func TestNewFrom100(t *testing.T) {
+	type args struct {
+		value int64
+	}
+	tests := []struct {
+		name string
+		args args
+		want Decimal
+	}{
+		{
+			name: "6.52",
+			args: args{value: 652},
+			want: NewFromFloat(6.52),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewFrom100(tt.args.value); !got.Equal(tt.want) {
+				t.Errorf("NewFrom100() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDecimal_Int100(t *testing.T) {
+	tests := []struct {
+		name  string
+		value Decimal
+		want  int64
+	}{
+		{
+			name:  "6.52",
+			value: NewFromFloat(6.52),
+			want:  652,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.value.Int100(); got != tt.want {
+				t.Errorf("Decimal.Int100() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
